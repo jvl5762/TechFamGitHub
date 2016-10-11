@@ -2,15 +2,15 @@ CREATE TABLE Register_Users (
 	username STRING,
 	password STRING,
 	email STRING,
-	age INT,
+	age INTEGER,
 	gender CHAR(10),
 	income REAL,
 	name STRING,
-	supplier_id INT,
+	supplier_id INTEGER,
 	UNIQUE (username),
 	PRIMARY KEY (username));
 CREATE TABLE UPS (
-	shipping_id INT,
+	shipping_id INTEGER,
 	shipping_date DATE,
 	shipping_method STRING,
 	buyer_information STRING,
@@ -18,33 +18,33 @@ CREATE TABLE UPS (
 	PRIMARY KEY (shipping_id),
 	FOREIGN KEY (transaction_id) REFERENCES Sale (transaction_id));
 CREATE TABLE Customer_Service (
-	customer_service_id INT,
+	customer_service_id INTEGER,
 	email STRING,
 	faqs STRING,
 	phone_number INTEGER,
 	PRIMARY KEY (customer_service_id),
 	FOREIGN KEY (phone_number) REFERENCES Phone (phone_number));
 CREATE TABLE shipped_from (
-	address_id INT,
-	item_id INT,
+	address_id INTEGER,
+	item_id INTEGER,
 	PRIMARY KEY (item_id, address_id),
 	FOREIGN KEY (item_id, address_id) REFERENCES Sales_Item (item_id), Address (address_id)
 	ON DELETE NO ACTION);
 CREATE TABLE has_visual (
-	item_id INT,
-	img_id INT,
+	item_id INTEGER,
+	img_id INTEGER,
 	color STRING,
 	FOREIGN KEY (item_id, img_id) REFERENCES Sales_Item (item_id), Image (img_id) 
 	ON DELETE CASCADE);
 CREATE TABLE contact_by (
-	phone_number INT,
+	phone_number INTEGER,
 	suppliers_id 
 	PRIMARY KEY (phone_number, suppliers_id)
 	FOREIGN KEY (phone_number, suppliers_id) REFERENCES Phone (phone_number), Suppliers (suppliers_id) );
 CREATE TABLE pays_with (
 	username STRING,
-	number INT,
-	address_id INT,
+	number INTEGER,
+	address_id INTEGER,
 	PRIMARY KEY (username, number, address_id) 
 	FOREIGN KEY (username, number, address_id) REFERENCES Register_Users (username), Credit_Card (number), Address (address_id));
 	
