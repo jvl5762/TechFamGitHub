@@ -10,7 +10,7 @@ CREATE TABLE Register_Users
  supplier_id INTEGER,
  UNIQUE (username),
  PRIMARY KEY (username)
- );
+);
 CREATE TABLE UPS
 (
  shipping_id INTEGER,
@@ -19,7 +19,8 @@ CREATE TABLE UPS
  buyer_information STRING,
  transaction_id STRING,
  PRIMARY KEY (shipping_id),
- FOREIGN KEY (transaction_id) REFERENCES Sale (transaction_id));
+ FOREIGN KEY (transaction_id) REFERENCES Sale (transaction_id)
+);
 CREATE TABLE Customer_Service 
 (
  customer_service_id INTEGER,
@@ -28,7 +29,7 @@ CREATE TABLE Customer_Service
  phone_number INTEGER,
  PRIMARY KEY (customer_service_id),
  FOREIGN KEY (phone_number) REFERENCES Phone (phone_number)
- );
+);
 CREATE TABLE shipped_from 
 (
  address_id INTEGER,
@@ -42,7 +43,8 @@ CREATE TABLE has_visual
  img_id INTEGER,
  color STRING,
  FOREIGN KEY (item_id, img_id) REFERENCES Sales_Item (item_id), Image (img_id) 
- ON DELETE CASCADE);
+ ON DELETE CASCADE
+);
 CREATE TABLE contact_by 
 (
  phone_number INTEGER,
@@ -57,5 +59,5 @@ CREATE TABLE pays_with
  address_id INTEGER,
  PRIMARY KEY (username, number, address_id) 
  FOREIGN KEY (username, number, address_id) REFERENCES Register_Users (username), Credit_Card (number), Address (address_id)
- );
+);
 	
