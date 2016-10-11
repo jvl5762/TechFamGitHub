@@ -1,0 +1,72 @@
+CREATE TABLE Address
+( address_id     INTEGER,
+  app_num        STRING,
+  street_address STRING,
+  city           STRING,
+  state          STRING,
+  zip            INTEGER,
+  supplier_id    INTEGER,
+  PRIMARY KEY (address_id),
+  FOREIGN KEY (supplier_id) REFERENCES Suppliers (supplier_id));
+
+CREATE TABLE Sales_Item
+( item_id        INTEGER,
+  count          INTEGER,
+  brand          STRING,
+  list_price     DECIMAL(2),
+  condition      STRING,
+  description    STRING,
+  name           STRING,
+  reserved_price DECIMAL(2),
+  category_id    INTEGER NOT NULL,
+  supplier_id    INTEGER,
+  PRIMARY KEY (item_id),
+  FOREIGN KEY (category_id) REFERENCES Category (category_id),
+  FOREIGN KEY (supplier_id) REFERENCES Suppliers (supplier_id));
+
+CREATE TABLE Footwear
+( size    DECIMAL(1),
+  item_id INTEGER,
+  PRIMARY KEY (item_id),
+  FOREIGN KEY (item_id) REFERENCES Sales_Item (item_id)
+  ON DELETE CASCADE);
+
+CREATE TABLE Custom_Shoe
+( tong_style   STRING,
+  sole_style   STRING,
+  shoe_style   STRING,
+  color        STRING,
+  side_img_id  INTEGER NOT NULL,
+  front_img_id INTEGER NOT NULL,
+  back_img_id  INTEGER NOT NULL,  
+  item_id      INTEGER,
+  PRIMARY KEY (item_id),
+  FOREIGN KEY (side_img_id) REFERENCES Image (img_id),
+  FOREIGN KEY (front_img_id) REFERENCES Image (img_id),
+  FOREIGN KEY (back_img_id) REFERENCES Image (img_id),
+  FOREIGN KEY (item_id) REFERENCES Footwear (item_id),
+  ON DELETE CASCADE);
+
+CREATE TABLE Rating
+( rating_id   INTEGER,
+  explanation STRING,
+  value       REAL,
+  username    STRING,
+  supplier_id INTEGER,
+  PRIMARY KEY (rating_id)
+  FOREIGN KEY (username) REFERENCES Registered_Users (username),
+  FOREIGN KEY (supplier_id) REFERENCES Suppliers (supplier_id));
+
+CREATE TABLE Category
+( category_id   INTEGER,
+  description   STRING,
+  category_name STRING,
+  parent_id     INTEGER,
+  PRIMARY KEY (category_id),
+  FOREIGN KEY (parent_id) REFERENCES Category (category_id)); 
+
+CREATE TABLE Image
+( img_id INTEGER,
+  image  BLOB,
+  PRIMARY KEY (img_id));
+  
