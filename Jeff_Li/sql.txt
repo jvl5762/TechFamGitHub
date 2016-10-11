@@ -1,12 +1,12 @@
 CREATE TABLE Suppliers (
 	supplier_id	INTEGER,
-	email		CHAR(40),
-	name		CHAR(20),
+	email		STRING,
+	name		STRING,
 	PRIMARY KEY (supplier_id)
 );
 
 CREATE TABLE Company (
-	point_of_contact	CHAR(40),
+	point_of_contact	STRING,
 	supplier_id		INTEGER,
 	PRIMARY KEY (supplier_id),
 	FOREIGN KEY (supplier_id) REFERENCES Suppliers (supplier_id) ON DELETE CASCADE
@@ -14,9 +14,9 @@ CREATE TABLE Company (
 
 CREATE TABLE Credit_Card (
 	number		INTEGER,
-	name		CHAR(20),
-	type		CHAR(20),
-	expiration	DATE,
+	name		STRING,
+	type		STRING,
+	expiration	TIMESTAMP,
 	PRIMARY KEY (number)
 );
 
@@ -33,7 +33,7 @@ CREATE TABLE Bid (
 	amount			DECIMAL(2),
 	cancellation_timestamp	TIMESTAMP,
 	item_id			INTEGER,
-	PRIMARY KEY (bid_id, item_id),
+	PRIMARY KEY (bid_id),
 	FOREIGN KEY (item_id) REFERENCES Sales_Item (item_id) ON DELETE CASCADE
 );
 
@@ -48,9 +48,9 @@ CREATE TABLE Sale (
 	date			DATE,
 	auction_or_sale		BOOLEAN,
 	item_id			INTEGER,
-	username		CHAR(20),
+	username		STRING,
 	credit_card_number	INTEGER,
-	PRIMARY KEY (transaction_id, item_id, username, credit_card_number),
+	PRIMARY KEY (transaction_id),
 	FOREIGN KEY (item_id) REFERENCES Sales_Item (item_id) ON DELETE NO ACTION,
 	FOREIGN KEY (username) REFERENCES Registered_Users (username) ON DELETE NO ACTION,
 	FOREIGN KEY (credit_card_number) REFERENCES Credit_Card ON DELETE NO ACTION (credit_card_number)
