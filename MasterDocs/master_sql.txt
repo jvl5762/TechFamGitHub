@@ -1,20 +1,3 @@
-Skip to content
-This repository
-Search
-Pull requests
-Issues
-Gist
- @jvl5762
- Watch 0
-  Star 0
-  Fork 4 jvl5762/TechFamGitHub
- Code  Issues 0  Pull requests 0  Projects 0  Wiki  Pulse  Graphs  Settings
-Branch: master Find file Copy pathTechFamGitHub/Ben_Myers/SQL.txt
-07b2846  6 hours ago
-@myersben2 myersben2 Add files via upload
-1 contributor
-RawBlameHistory     
-73 lines (65 sloc)  2.02 KB
 CREATE TABLE Address
 ( address_id     INTEGER,
   app_num        STRING,
@@ -154,3 +137,53 @@ CREATE TABLE bid_by (
 	FOREIGN KEY (bid_id) REFERENCES Bid(bid_id) ON DELETE CASCASE,
 	FOREIGN KEY (username) REFERENCES Registered_Users(username)
 );
+
+CREATE TABLE Register_Users (
+	username STRING,
+	password STRING,
+	email STRING,
+	age INT,
+	gender CHAR(10),
+	income REAL,
+	name STRING,
+	supplier_id INT,
+	UNIQUE (username),
+	PRIMARY KEY (username));
+CREATE TABLE UPS (
+	shipping_id INT,
+	shipping_date DATE,
+	shipping_method STRING,
+	buyer_information STRING,
+	transaction_id STRING,
+	PRIMARY KEY (shipping_id),
+	FOREIGN KEY (transaction_id) REFERENCES Sale (transaction_id));
+CREATE TABLE Customer_Service (
+	customer_service_id INT,
+	email STRING,
+	faqs STRING,
+	phone_number INTEGER,
+	PRIMARY KEY (customer_service_id),
+	FOREIGN KEY (phone_number) REFERENCES Phone (phone_number));
+CREATE TABLE shipped_from (
+	address_id INT,
+	item_id INT,
+	PRIMARY KEY (item_id, address_id),
+	FOREIGN KEY (item_id, address_id) REFERENCES Sales_Item (item_id), Address (address_id)
+	ON DELETE NO ACTION);
+CREATE TABLE has_visual (
+	item_id INT,
+	img_id INT,
+	color STRING,
+	FOREIGN KEY (item_id, img_id) REFERENCES Sales_Item (item_id), Image (img_id) 
+	ON DELETE CASCADE);
+CREATE TABLE contact_by (
+	phone_number INT,
+	suppliers_id 
+	PRIMARY KEY (phone_number, suppliers_id)
+	FOREIGN KEY (phone_number, suppliers_id) REFERENCES Phone (phone_number), Suppliers (suppliers_id) );
+CREATE TABLE pays_with (
+	username STRING,
+	number INT,
+	address_id INT,
+	PRIMARY KEY (username, number, address_id) 
+	FOREIGN KEY (username, number, address_id) REFERENCES Register_Users (username), Credit_Card (number), Address (address_id));
