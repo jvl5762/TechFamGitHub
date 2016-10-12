@@ -20,9 +20,11 @@ CREATE TABLE Sales_Item
   reserved_price DECIMAL(2),
   category_id    INTEGER NOT NULL,
   supplier_id    INTEGER,
+  address_id     INTEGER NOT NULL,
   PRIMARY KEY (item_id),
   FOREIGN KEY (category_id) REFERENCES Category (category_id),
-  FOREIGN KEY (supplier_id) REFERENCES Suppliers (supplier_id));
+  FOREIGN KEY (supplier_id) REFERENCES Suppliers (supplier_id)
+  FOREIGN KEY (address_id) REFERENCES Address(address_id));
 
 CREATE TABLE Footwear
 ( size    DECIMAL(1),
@@ -53,7 +55,7 @@ CREATE TABLE Rating
   value       REAL,
   username    CHAR(40),
   supplier_id INTEGER,
-  PRIMARY KEY (rating_id)
+  PRIMARY KEY (rating_id),
   FOREIGN KEY (username) REFERENCES Registered_Users (username),
   FOREIGN KEY (supplier_id) REFERENCES Suppliers (supplier_id));
 
@@ -124,7 +126,7 @@ CREATE TABLE Sale (
     credit_card_number INTEGER NOT NULL,
     PRIMARY KEY (transaction_id),
     FOREIGN KEY (item_id) REFERENCES Sales_Item (item_id),
-    FOREIGN KEY (username) REFERENCES Registered_Users (username),
+    FOREIGN KEY (username) REFERENCES Register_Users (username),
     FOREIGN KEY (credit_card_number) REFERENCES Credit_Card (credit_card_number)
 );
 
@@ -135,7 +137,7 @@ CREATE TABLE bid_by (
     username CHAR(40),
     PRIMARY KEY (bid_id, username),
     FOREIGN KEY (bid_id) REFERENCES Bid(bid_id) ON DELETE CASCASE,
-    FOREIGN KEY (username) REFERENCES Registered_Users(username)
+    FOREIGN KEY (username) REFERENCES Register_Users(username)
 );
 
 CREATE TABLE Register_Users
@@ -149,7 +151,8 @@ CREATE TABLE Register_Users
  name CHAR(20),
  supplier_id INTEGER,
  UNIQUE (username),
- PRIMARY KEY (username)
+ PRIMARY KEY (username),
+ FOREIGN KEY (supplier_id) REFERENCES Suppliers (supplier_id)
 );
 CREATE TABLE UPS
 (
