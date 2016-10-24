@@ -60,3 +60,45 @@ VALUES();
 
 INSERT INTO Address (address_id, app_num, street_address, city, state, ziup, supplier_id)
 VALUES();
+
+DELETE FROM Sales_Item WHERE
+
+DELETE FROM Suppliers WHERE
+
+DELETE FROM UPS WHERE
+
+DELETE FROM Sale WHERE
+
+DELETE FROM Register_Users WHERE
+
+DELETE FROM Rating WHERE
+
+DELETE FROM Phone WHER
+
+DELETE FROM pays_with WHERE
+
+DELETE FROM Image WHERE
+
+DELETE FROM has_visual WHERE
+
+DELETE FROM Footwear WHERE
+
+DELETE FROM Customer_Service WHERE
+
+DELETE FROM Custom_Shoe WHERE
+
+DELETE FROM Credit_Card WHERE
+
+DELETE FROM contact_by WHERE
+
+DELETE FROM Company WHERE
+
+DELETE FROM Category WHERE
+
+DELETE FROM Bid WHERE
+
+DELETE FROM bid_by WHERE
+
+DELETE FROM Auction WHERE 
+
+DELETE FROM Address WHERE 
