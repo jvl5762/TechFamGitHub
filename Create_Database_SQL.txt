@@ -1,0 +1,209 @@
+CREATE TABLE Suppliers
+( supplier_id INTEGER,
+  email       CHAR(40),
+  name        CHAR(40),
+  PRIMARY KEY (supplier_id)
+);
+
+CREATE TABLE Company
+( point_of_contact CHAR(40),
+  supplier_id INTEGER,
+  PRIMARY KEY (supplier_id),
+  FOREIGN KEY (supplier_id) REFERENCES Suppliers (supplier_id)
+  ON DELETE CASCADE
+);
+
+CREATE TABLE Register_Users
+( username    CHAR(40),
+  password    VARCHAR(40),
+  age         INTEGER,
+  gender      CHAR(10),
+  income      REAL,
+  supplier_id INTEGER NOT NULL UNIQUE,
+  PRIMARY KEY (username),
+  FOREIGN KEY (supplier_id) REFERENCES Suppliers (supplier_id) 
+  ON DELETE CASCADE
+);
+
+CREATE TABLE Rating
+( rating_id   INTEGER,
+  explanation CHAR(128),
+  value       REAL,
+  username    CHAR(40),
+  supplier_id INTEGER,
+  PRIMARY KEY (supplier_id, rating_id),
+  FOREIGN KEY (USERNAME) REFERENCES Register_Users (username),
+  FOREIGN KEY (supplier_id) REFERENCES Suppliers (supplier_id)
+  ON DELETE CASCADE
+);
+
+CREATE TABLE Address
+( address_id     INTEGER,
+  app_num        CHAR(20),
+  street_address CHAR(40),
+  city           CHAR(20),
+  state          CHAR(20),
+  zip            INTEGER,
+  supplier_id    INTEGER,
+  PRIMARY KEY    (address_id),
+  FOREIGN KEY    (supplier_id) REFERENCES Suppliers (supplier_id)
+);
+
+CREATE TABLE Category
+( category_id INTEGER,
+  description CHAR(128),
+  category_name CHAR(40),
+  parent_id INTEGER,
+  PRIMARY KEY (category_id),
+  FOREIGN KEY (parent_id) REFERENCES Category (category_id)
+);
+
+
+CREATE TABLE Sales_Item
+( item_id        INTEGER,
+  count          INTEGER,
+  brand          CHAR(40),
+  list_price     DECIMAL(7,2),
+  state          CHAR(20),
+  description    VARCHAR(999),
+  name           CHAR(80),
+  reserved_price DECIMAL(7,2),
+  category_id    INTEGER NOT NULL,
+  supplier_id    INTEGER,
+  address_id     INTEGER NOT NULL,
+  PRIMARY KEY (item_id),
+  FOREIGN KEY (category_id) REFERENCES Category (category_id),
+  FOREIGN KEY (supplier_id) REFERENCES Suppliers (supplier_id),
+  FOREIGN KEY (address_id) REFERENCES Address (address_id)
+);
+
+CREATE TABLE Footwear
+( size CHAR(40),
+  item_id INTEGER,
+  PRIMARY KEY (item_id),
+  FOREIGN KEY (item_id) REFERENCES Sales_Item (item_id)
+  ON DELETE CASCADE
+);
+
+CREATE TABLE Image
+( img_id INTEGER,
+  image CHAR(128),
+  PRIMARY KEY (img_id)
+);
+
+CREATE TABLE has_visual
+( item_id INTEGER,
+  img_id  INTEGER,
+  color   CHAR(80),
+  PRIMARY KEY (item_id, img_id),
+  FOREIGN KEY (item_id) REFERENCES Sales_Item (item_id),
+  FOREIGN KEY (img_id) REFERENCES Image (img_id)
+);
+
+
+CREATE TABLE Phone
+( phone_number BIGINT,
+  PRIMARY KEY (phone_number)
+);
+
+CREATE TABLE contact_by
+( phone_number BIGINT,
+  supplier_id  INTEGER,
+  PRIMARY KEY (phone_number, supplier_id),
+  FOREIGN KEY (phone_number) REFERENCES Phone (phone_number),
+  FOREIGN KEY (supplier_id) REFERENCES Suppliers (supplier_id)
+);
+
+CREATE TABLE Credit_Card
+( number BIGINT,
+  name CHAR(40),
+  type CHAR(20),
+  expiration DATE,
+  PRIMARY KEY (number)
+);
+
+CREATE TABLE pays_with
+( username CHAR(40),
+  number BIGINT,
+  address_id INTEGER,
+  PRIMARY KEY (username, number, address_id),
+  FOREIGN KEY (username) REFERENCES Register_Users (username),
+  FOREIGN KEY (number) REFERENCES Credit_Card (number),
+  FOREIGN KEY (address_id) REFERENCES Address (address_id)
+);
+
+CREATE TABLE Sale
+( transaction_id INTEGER,
+  price DECIMAL(7,2),
+  date INTEGER,
+  auction_or_sale BOOL,
+  item_id INTEGER NOT NULL,
+  username CHAR(40) NOT NULL,
+  credit_card_number BIGINT NOT NULL,
+  PRIMARY KEY (transaction_id),
+  FOREIGN KEY (item_id) REFERENCES Sales_Item (item_id),
+  FOREIGN KEY (username) REFERENCES Register_Users (username),
+  FOREIGN KEY (credit_card_number) REFERENCES Credit_Card (number)
+);
+
+CREATE TABLE Auction
+( timestamp_start INTEGER,
+  timestamp_end   INTEGER,
+  item_id         INTEGER,
+  PRIMARY KEY (timestamp_start, item_id),
+  FOREIGN KEY (item_id) REFERENCES Sales_Item (item_id) 
+  ON DELETE CASCADE
+);
+
+CREATE TABLE Bid
+( bid_id                  INTEGER,
+  amount                  DECIMAL(7,2),
+  cancellation_timestamp  INTEGER,
+  item_id                 INTEGER NOT NULL,
+  auction_timestamp_start INTEGER,
+  username                CHAR(40) NOT NULL,
+  is_auto                 BOOLEAN NOT NULL,
+  max_amount              DECIMAL(7,2),
+  PRIMARY KEY (bid_id, item_id, auction_timestamp_start),
+  FOREIGN KEY (item_id, auction_timestamp_start) REFERENCES Auction (item_id, timestamp_start)
+  ON DELETE CASCADE,
+  FOREIGN KEY (username) REFERENCES Register_Users (username)
+);
+
+CREATE TABLE Custom_Shoe
+( tong_style   CHAR(20),
+  sole_style   CHAR(20),
+  shoe_style   CHAR(20),
+  color        CHAR(80),
+  side_img_id  INTEGER NOT NULL,
+  front_img_id INTEGER NOT NULL,
+  back_img_id  INTEGER NOT NULL,
+  item_id      INTEGER,
+  PRIMARY KEY (item_id),
+  FOREIGN KEY (side_img_id) REFERENCES Image (img_id),
+  FOREIGN KEY (front_img_id) REFERENCES Image (img_id),
+  FOREIGN KEY (back_img_id) REFERENCES Image (img_id),
+  FOREIGN KEY (item_id) REFERENCES Footwear (item_id)
+  ON DELETE CASCADE
+);
+
+CREATE TABLE Customer_Service
+( customer_service_id INTEGER,
+  email CHAR(40),
+  faqs CHAR(128),
+  phone_number BIGINT,
+  PRIMARY KEY (customer_service_id),
+  FOREIGN KEY (phone_number) REFERENCES Phone (phone_number)
+);
+
+CREATE TABLE UPS
+( shipping_id INTEGER,
+  shipping_date INTEGER,
+  shipping_method CHAR(20),
+  transaction_id INTEGER,
+  shipping_address_id INTEGER,
+  PRIMARY KEY (shipping_id),
+  FOREIGN KEY (transaction_id) REFERENCES Sale (transaction_id),
+  FOREIGN KEY (shipping_address_id) REFERENCES Address (address_id)
+);
+
