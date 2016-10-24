@@ -1,0 +1,62 @@
+INSERT INTO Sales_Item (item_id, count, brand, list_price, state, description, name, reserved_price, category_id, supplier_id, address_id)
+VALUES();
+
+INSERT INTO Suppliers (suppliers_id, email, name)
+VALUES();
+
+INSERT INTO UPS (shipping_id, shipping_date, shipping_method, transaction_id)
+VALUES();
+
+INSERT INTO Sale (transaction_id, price, date, auction_or_sale, item_id, username, credit_card_number)
+VALUES();
+
+INSERT INTO Register_Users (username, password, age, gender, income, name, supplier_id)
+VALUES();
+
+INSERT INTO Rating (rating_id, explanation, value, username, supplier_id)
+VALUES();
+
+INSERT INTO Phone (phone_number)
+VALUES();
+
+INSERT INTO pays_with (username, number, address_id)
+VALUES();
+
+INSERT INTO Image (img_id, image)
+VALUES();
+
+INSERT INTO has_visual (item_id, img_id, color)
+VALUES();
+
+INSERT INTO Footwear (size, item_id)
+VALUES();
+
+INSERT INTO Customer_Service (customer_service_id, email, faqs, phone_number)
+VALUES();
+
+INSERT INTO Custom_Shoe (tong_style, sole_style, shoe_style, color, side_img_od, front_img,id, back_img_id, item_id)
+VALUES();
+
+INSERT INTO Credit_Card (number, name, type, expiration)
+VALUES();
+
+INSERT INTO contact_by (phone_number, supplier_id)
+VALUES();
+
+INSERT INTO Company (point_of_contact, supplier_id)
+VALUES();
+
+INSERT INTO Category (category_id, description, category_name, parent_id)
+VALUES();
+
+INSERT INTO Bid (bid_id, amount, cancellation_timestamp, item_id)
+VALUES();
+
+INSERT INTO bid_by (max_amount, is_auto, bid_id, username)
+VALUES();
+
+INSERT INTO Auction (timestamp_start, timestamp_end, item_id)
+VALUES();
+
+INSERT INTO Address (address_id, app_num, street_address, city, state, ziup, supplier_id)
+VALUES();
