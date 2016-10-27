@@ -12,11 +12,14 @@
 	// input - username, password, name, phone_number, app_num, street_address, city, state, zip, 
 	//         credit_card_name, credit_card_number, type, expiration
 	//-------------------------------------------------------------------------------------------------------
-	// databases and fields used: suppliers - supplier_id, name, email
-	// 					  register_users - username, password, age, gender, income, supplier_id
-	//					  address - address_id, app_num, street_address, city, state, zip, supplier_id
-	//					  phone - phone_number
-	//					  credit_card - number, name, type, expiration
+	// databases and fields used: 
+	//	suppliers - supplier_id, name, email
+	// 	register_users - username, password, age, gender, income, supplier_id
+	//	address - address_id, app_num, street_address, city, state, zip, supplier_id
+	//	phone - phone_number
+	//	credit_card - number, name, type, expiration
+	//-------------------------------------------------------------------------------------------------------
+	// error when int inputs are too large
 	//-------------------------------------------------------------------------------------------------------
 	
 	Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/techfam?autoReconnect=true&useSSL=false","root", "root");
@@ -29,7 +32,7 @@
 	result = incrementID.executeQuery();
 	
 	//insert new user info in suppliers table
-	if (result.next()) {
+		result.next();
 		new_supplier_ID = result.getInt(1) + 1;
 		
 		insert_supplier = con.prepareStatement("INSERT INTO suppliers " + "VALUES (?,?,?)");
@@ -78,10 +81,6 @@
 		insert_card.setInt(1, Integer.parseInt(request.getParameter("credit_card_number")));
 		insert_card.setString(2, request.getParameter("credit_card_name"));
 		insert_card.setString(3, request.getParameter("type"));
-		insert_card.setDate(4, java.sql.Date.valueOf("2013-09-04"));
+		insert_card.setDate(4, java.sql.Date.valueOf(request.getParameter("expiration")));	// not too sure about this
 		insert_card.executeUpdate();
-	}
-	
-	
-	
 %>
