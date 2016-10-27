@@ -13,16 +13,16 @@
 	//         credit_card_name, credit_card_number, type, expiration
 	//-------------------------------------------------------------------------------------------------------
 	// databases and fields used: suppliers - supplier_id, name, email
-	// 							  register_users - username, password, age, gender, income, supplier_id
-	//							  address - address_id, app_num, street_address, city, state, zip, supplier_id
-	//							  phone - phone_number
-	//							  credit_card - number, name, type, expiration
+	// 					  register_users - username, password, age, gender, income, supplier_id
+	//					  address - address_id, app_num, street_address, city, state, zip, supplier_id
+	//					  phone - phone_number
+	//					  credit_card - number, name, type, expiration
 	//-------------------------------------------------------------------------------------------------------
 	
 	Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/techfam?autoReconnect=true&useSSL=false","root", "root");
 	PreparedStatement incrementID, insert_supplier, insert_register_user, insert_address, insert_phone, insert_card;
 	ResultSet result;
-	int new_supplier_ID, new_address_ID, thing;
+	int new_supplier_ID, new_address_ID;
 	
 	//find largest supplier_id and increment it by one - this is the new users ID
 	incrementID = con.prepareStatement("SELECT MAX(supplier_id) FROM suppliers");
@@ -36,8 +36,8 @@
 		insert_supplier.setInt(1, new_supplier_ID);
 		insert_supplier.setString(2, request.getParameter("email"));
 		insert_supplier.setString(3, request.getParameter("name"));
-		thing = insert_supplier.executeUpdate();
-		if (thing == 1) {System.out.println("1");}
+		insert_supplier.executeUpdate();
+
 		
 		//insert new user info in register user
 		insert_register_user = con.prepareStatement("INSERT INTO register_users " + "VALUES (?,SHA1(?),?,?,?,?)");
@@ -47,8 +47,8 @@
 		insert_register_user.setString(4, request.getParameter("gender"));
 		insert_register_user.setInt(5, 0);
 		insert_register_user.setInt(6, new_supplier_ID);
-		thing = insert_register_user.executeUpdate();
-		if (thing == 1) {System.out.println("1");}
+		insert_register_user.executeUpdate();
+		
 		
 		//insert new user info into address
 		incrementID = con.prepareStatement("SELECT MAX(supplier_id) FROM suppliers");
@@ -64,14 +64,14 @@
 		insert_address.setString(5, request.getParameter("state"));
 		insert_address.setInt(6, Integer.parseInt(request.getParameter("zip")));
 		insert_address.setInt(7, new_supplier_ID);
-		thing = insert_address.executeUpdate();
-		if (thing == 1) {System.out.println("1");}
+		insert_address.executeUpdate();
+		
 		
 		// insert new phone number
 		insert_phone = con.prepareStatement("INSERT INTO phone " + "VALUES (?)");
 		insert_phone.setInt(1, Integer.parseInt(request.getParameter("phone_number")));
-		thing = insert_phone.executeUpdate();
-		if (thing == 1) {System.out.println("1");}
+		insert_phone.executeUpdate();
+		
 		
 		// insert credit card
 		insert_card = con.prepareStatement("INSERT INTO credit_card " + "VALUES (?,?,?,?)");
@@ -79,8 +79,7 @@
 		insert_card.setString(2, request.getParameter("credit_card_name"));
 		insert_card.setString(3, request.getParameter("type"));
 		insert_card.setDate(4, java.sql.Date.valueOf("2013-09-04"));
-		thing = insert_card.executeUpdate();
-		if (thing == 1) {System.out.println("1");}
+		insert_card.executeUpdate();
 	}
 	
 	
