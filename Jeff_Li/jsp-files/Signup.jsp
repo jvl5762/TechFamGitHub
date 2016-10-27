@@ -19,8 +19,6 @@
 	//	phone - phone_number
 	//	credit_card - number, name, type, expiration
 	//-------------------------------------------------------------------------------------------------------
-	// error when int inputs are too large
-	//-------------------------------------------------------------------------------------------------------
 	
 	Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/techfam?autoReconnect=true&useSSL=false","root", "root");
 	PreparedStatement incrementID, insert_supplier, insert_register_user, insert_address, insert_phone, insert_card;
@@ -36,20 +34,19 @@
 		new_supplier_ID = result.getInt(1) + 1;
 		
 		insert_supplier = con.prepareStatement("INSERT INTO suppliers " + "VALUES (?,?,?)");
-		insert_supplier.setInt(1, new_supplier_ID);
+		insert_supplier.setLong(1, new_supplier_ID);
 		insert_supplier.setString(2, request.getParameter("email"));
 		insert_supplier.setString(3, request.getParameter("name"));
 		insert_supplier.executeUpdate();
-
 		
 		//insert new user info in register user
 		insert_register_user = con.prepareStatement("INSERT INTO register_users " + "VALUES (?,SHA1(?),?,?,?,?)");
 		insert_register_user.setString(1, request.getParameter("username"));
 		insert_register_user.setString(2, request.getParameter("password"));
-		insert_register_user.setInt(3, Integer.parseInt(request.getParameter("age")));
+		insert_register_user.setLong(3, Long.parseLong(request.getParameter("age")));
 		insert_register_user.setString(4, request.getParameter("gender"));
-		insert_register_user.setInt(5, 0);
-		insert_register_user.setInt(6, new_supplier_ID);
+		insert_register_user.setLong(5, 0);
+		insert_register_user.setLong(6, new_supplier_ID);
 		insert_register_user.executeUpdate();
 		
 		
@@ -60,25 +57,25 @@
 		new_address_ID = result.getInt(1) + 1;
 	
 		insert_address = con.prepareStatement("INSERT INTO address " + "VALUES (?,?,?,?,?,?,?)");
-		insert_address.setInt(1, new_address_ID);
+		insert_address.setLong(1, new_address_ID);
 		insert_address.setString(2, request.getParameter("app_num"));
 		insert_address.setString(3, request.getParameter("street_address"));
 		insert_address.setString(4, request.getParameter("city"));
 		insert_address.setString(5, request.getParameter("state"));
-		insert_address.setInt(6, Integer.parseInt(request.getParameter("zip")));
-		insert_address.setInt(7, new_supplier_ID);
+		insert_address.setLong(6, Long.parseLong(request.getParameter("zip")));
+		insert_address.setLong(7, new_supplier_ID);
 		insert_address.executeUpdate();
 		
 		
 		// insert new phone number
 		insert_phone = con.prepareStatement("INSERT INTO phone " + "VALUES (?)");
-		insert_phone.setInt(1, Integer.parseInt(request.getParameter("phone_number")));
+		insert_phone.setLong(1, Long.parseLong(request.getParameter("phone_number")));
 		insert_phone.executeUpdate();
 		
 		
 		// insert credit card
 		insert_card = con.prepareStatement("INSERT INTO credit_card " + "VALUES (?,?,?,?)");
-		insert_card.setInt(1, Integer.parseInt(request.getParameter("credit_card_number")));
+		insert_card.setLong(1, Long.parseLong(request.getParameter("credit_card_number")));
 		insert_card.setString(2, request.getParameter("credit_card_name"));
 		insert_card.setString(3, request.getParameter("type"));
 		insert_card.setDate(4, java.sql.Date.valueOf(request.getParameter("expiration")));	// not too sure about this
