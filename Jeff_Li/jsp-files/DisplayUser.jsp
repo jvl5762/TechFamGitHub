@@ -16,7 +16,6 @@
 	Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/techfam?autoReconnect=true&useSSL=false","root", "root");
 	PreparedStatement select_user;
 	ResultSet result;
-	int return_value = 0;
 	
 	//find largest supplier_id and increment it by one - this is the new users ID
 	select_user = con.prepareStatement("SELECT s.name, ru.username, ru.age, ru.gender, ru.income, r.value " + 
