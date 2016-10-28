@@ -20,12 +20,13 @@
 	
 	//find largest supplier_id and increment it by one - this is the new users ID
 	select_user = con.prepareStatement("SELECT s.name, ru.username, ru.age, ru.gender, ru.income, r.value " + 
-									   "FROM suppliers s, register_users ru, rating r " + 
-									   "WHERE s.supplier_id = ? and ru.supplier_id = ? and r.supplier_id = ?");
+					   "FROM suppliers s, register_users ru, rating r " + 
+					   "WHERE s.supplier_id = ? and ru.supplier_id = ? and r.supplier_id = ?");
 	select_user.setInt(1, Integer.parseInt(request.getParameter("supplier_id")));
 	select_user.setInt(2, Integer.parseInt(request.getParameter("supplier_id")));
 	select_user.setInt(3, Integer.parseInt(request.getParameter("supplier_id")));
 	
+	// result contains desired user information
 	result = select_user.executeQuery();
 	
 %>
