@@ -8,10 +8,14 @@
 <body>
 	<%
 	
+	//-----------------------------------------------------
 	// input: supplier_id
 	// output: the fields below
-	// databases used: suppliers, register_user, rating
-	// fields used: name, username, age, gender, income, value
+	// databases and fields used: 
+	//	suppliers - name
+	//	register_users - username, age, gender, income
+	//	rating - value
+	//-----------------------------------------------------
 	
 	Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/techfam?autoReconnect=true&useSSL=false","root", "root");
 	PreparedStatement select_user;
