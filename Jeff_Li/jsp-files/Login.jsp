@@ -10,7 +10,7 @@
 	
 	// databases used: register_user
 	// fields used: username, password
-	// return: if login was successful
+	// return: if login was successful or failed
 	
 	Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/techfam?autoReconnect=true&useSSL=false","root", "root");
 	PreparedStatement verify;
