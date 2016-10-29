@@ -7,11 +7,14 @@
 <html>
 <body>
 	<%
-	
-	//-----------------------------------------------------
+	//---------------------------------------------------------------
+	// This jsp file handles the login of existing users. The
+	// register_users table is checked to see if username-password 
+	// combination exists.
+	//---------------------------------------------------------------
 	// databases and fields used: register_user - username, password
 	// return: if login was successful or failed
-	//-----------------------------------------------------
+	//---------------------------------------------------------------
 	
 	Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/techfam?autoReconnect=true&useSSL=false","root", "root");
 	PreparedStatement verify;
