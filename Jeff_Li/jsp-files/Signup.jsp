@@ -10,6 +10,9 @@
 	<%
 	
 	//-------------------------------------------------------------------------------------------------------
+	// This jsp file handles the signing up of new users. User are to input valid info for signing up to be
+	// successful. We should partition this code into functions later. 
+	//-------------------------------------------------------------------------------------------------------
 	// input - username, password, name, phone_number, app_num, street_address, city, state, zip, 
 	//         credit_card_name, credit_card_number, type, expiration
 	// output - if there is an error, show the reason for error, else show sign up is successful
