@@ -12,8 +12,10 @@
 	// This jsp file displays the desired user information, 
 	// including basic user info (name, email, etc.) 
 	// and all the user's ratings.
+	//-----------------------------------------------------
 	// input: supplier_id
 	// output: the fields below
+	//-----------------------------------------------------
 	// databases and fields used: 
 	//     suppliers - name
 	//     register_user - username, age, gender, income
