@@ -8,19 +8,18 @@
 <body>
 	<%
 	
-	//-----------------------------------------------------
-	// This jsp file displays the desired user information, 
-	// including basic user info (name, email, etc.) 
-	// and all the user's ratings.
-	//-----------------------------------------------------
+	//----------------------------------------------------------------------------
+	// This jsp file displays the desired user information, including basic user 
+	// info (name, email, etc.) and all the user's ratings.
+	//----------------------------------------------------------------------------
 	// input: supplier_id
-	// output: the fields below
-	//-----------------------------------------------------
+	// output: the fields below (except id's) - stored in ResultSet data below
+	//----------------------------------------------------------------------------
 	// databases and fields used: 
-	//     suppliers - name
-	//     register_user - username, age, gender, income
-	//     rating - username, explanation, value
-	//-----------------------------------------------------
+	//     suppliers - supplier_id, name (stored in result_user)
+	//     register_user - username, age, gender, income (stored in result_user)
+	//     rating - username, explanation, value (stored in result_ratings)
+	//----------------------------------------------------------------------------
 	
 	
 	Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/techfam?autoReconnect=true&useSSL=false","root", "root");
