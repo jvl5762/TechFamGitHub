@@ -44,11 +44,11 @@
 			
 	// result_ratings contains all ratings for user
 	result_ratings = select_ratings.executeQuery();
-					
+	
+	
+	
+// this is just a test display 					
 %>
-
-// this is just a test display 
-
 
 <p style='color:red'> This is the user</p>
 <table style='width:100%'>
