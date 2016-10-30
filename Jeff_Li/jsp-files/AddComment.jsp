@@ -12,7 +12,7 @@
 	// This jsp file allows a user to rate another user,
 	// which inserts that information into the rating table
 	//--------------------------------------------------------------------
-	// input: supplier_id of the user rating and supplier_id 
+	// input: supplier_id of the user rating and username 
 	//        of the user being rated (in that order)
 	// output: if rating was succesful
 	//--------------------------------------------------------------------
@@ -24,21 +24,14 @@
 	
 	
 	Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/techfam?autoReconnect=true&useSSL=false","root", "root");
-	PreparedStatement check_username, select_username, select_rating_id, insert_rating;
-	ResultSet result_check, result_username, result_max_rating_id;
+	PreparedStatement check_username, select_rating_id, insert_rating;
+	ResultSet result_check, result_max_rating_id;
 	int increment_id;
-	
 		
-	// find rater's username info
-	select_username = con.prepareStatement("SELECT username FROM register_users WHERE supplier_id = ?");
-	select_username.setInt(1, Integer.parseInt(request.getParameter("supplier_id")));
-	result_username = select_username.executeQuery();	// select_username contains desired user information
-	result_username.next();
-	
-	
 	// check if the user has already given a rating to this user before -  deny rating if true
-	check_username = con.prepareStatement("SELECT username FROM rating WHERE username = ?");
-	check_username.setString(1, result_username.getString(1));
+	check_username = con.prepareStatement("SELECT username FROM rating WHERE username = ? AND supplier_id = ?");
+	check_username.setString(1, request.getParameter("username"));
+	check_username.setInt(2, Integer.parseInt(request.getParameter("supplier_id")));
 	result_check = check_username.executeQuery();
 	if (result_check.next()) {
 		//user has already submitted a rating before
@@ -57,7 +50,7 @@
 	insert_rating.setInt(1, increment_id);
 	insert_rating.setString(2, request.getParameter("explanation"));
 	insert_rating.setFloat(3, Float.parseFloat(request.getParameter("value")));
-	insert_rating.setString(4, result_username.getString(1));
-	insert_rating.setInt(5, Integer.parseInt(request.getParameter("supplier_id2")));	// supplier_id of the user being rated
+	insert_rating.setString(4,request.getParameter("username"));
+	insert_rating.setInt(5, Integer.parseInt(request.getParameter("supplier_id")));	// supplier_id of the user being rated
 	insert_rating.executeUpdate();	// result_ratings contains all ratings for user
 %>
