@@ -45,12 +45,12 @@
 	increment_id = result_max_rating_id.getInt(1) + 1;
 	
 	
-	// isnert rating for that user
-	insert_rating = con.prepareStatement("INSERT INTO rating the VALUES (?,?,?,?,?)");
+	// insert rating for that user
+	insert_rating = con.prepareStatement("INSERT INTO rating VALUES (?,?,?,?,?)");
 	insert_rating.setInt(1, increment_id);
 	insert_rating.setString(2, request.getParameter("explanation"));
 	insert_rating.setFloat(3, Float.parseFloat(request.getParameter("value")));
-	insert_rating.setString(4,request.getParameter("username"));
+	insert_rating.setString(4, request.getParameter("username"));
 	insert_rating.setInt(5, Integer.parseInt(request.getParameter("supplier_id")));	// supplier_id of the user being rated
 	insert_rating.executeUpdate();	// result_ratings contains all ratings for user
 %>
