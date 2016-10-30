@@ -8,23 +8,25 @@
 <body>
 	<%
 	
-	//----------------------------------------------------------------------------
-	// This jsp file displays the desired user information, including basic user 
-	// info (name, email, etc.) and all the user's ratings.
-	//----------------------------------------------------------------------------
+	//-----------------------------------------------------
+	// This jsp file displays the desired user information, 
+	// including basic user info (name, email, etc.) 
+	// and all the user's ratings.
+	//-----------------------------------------------------
 	// input: supplier_id
-	// output: the fields below (except id's) - stored in ResultSet data below
-	//----------------------------------------------------------------------------
+	// output: the fields below + user's avg_rating
+	//-----------------------------------------------------
 	// databases and fields used: 
-	//     suppliers - supplier_id, name (stored in result_user)
-	//     register_user - username, age, gender, income (stored in result_user)
-	//     rating - username, explanation, value (stored in result_ratings)
-	//----------------------------------------------------------------------------
+	//     suppliers - name
+	//     register_user - username, age, gender, income
+	//     rating - username, explanation, value
+	//-----------------------------------------------------
 	
 	
 	Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/techfam?autoReconnect=true&useSSL=false","root", "root");
-	PreparedStatement select_user, select_ratings;
-	ResultSet result_user, result_ratings;
+	PreparedStatement select_user, select_ratings, select_count;
+	ResultSet result_user, result_ratings, result_count;
+	float avg_rating = 0;
 	
 	// find basic user info
 	select_user = con.prepareStatement("SELECT s.name, ru.username, ru.age, ru.gender, ru.income " + 
@@ -32,20 +34,28 @@
 					   "WHERE s.supplier_id = ? and ru.supplier_id = ?");
 	select_user.setInt(1, Integer.parseInt(request.getParameter("supplier_id")));
 	select_user.setInt(2, Integer.parseInt(request.getParameter("supplier_id")));
-	
-	// result_user contains desired user information
-	result_user = select_user.executeQuery();
+	result_user = select_user.executeQuery();	// result_user contains desired user information
 	
 	
 	// find all the ratings for that user
 	select_ratings = con.prepareStatement("SELECT username, value, explanation " + 
 			   		      "FROM rating " + 
 			   		      "WHERE supplier_id = ?");
-	select_ratings.setInt(1, Integer.parseInt(request.getParameter("supplier_id")));
-			
-	// result_ratings contains all ratings for user
-	result_ratings = select_ratings.executeQuery();
+	select_ratings.setInt(1, Integer.parseInt(request.getParameter("supplier_id")));	
+	result_ratings = select_ratings.executeQuery();	// result_ratings contains all ratings for user
 	
+	
+	// find user's average rating
+	select_count = con.prepareStatement("SELECT COUNT(*) FROM rating where supplier_id = ?");
+	select_count.setString(1, request.getParameter("supplier_id"));
+	result_count = select_count.executeQuery();		// result_count contains number of ratings user has
+	result_count.next();
+	
+	while (result_ratings.next()) {
+		avg_rating += Float.parseFloat(result_ratings.getString("value"));
+	}
+	avg_rating = avg_rating / result_count.getInt(1); //avg user rating
+	result_ratings = select_ratings.executeQuery();	// reset result_ratings
 	
 	
 // this is just a test display 					
@@ -69,6 +79,7 @@
 	    <td><%= result_ratings.getString("value") %></td>
 	    <td><%= result_ratings.getString("explanation") %></td>
 	<% } %>
+	<td><%= avg_rating %></td>
   </tr>
   <% } %>
 
