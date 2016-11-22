@@ -135,7 +135,7 @@ CREATE TABLE pays_with
 CREATE TABLE Sale
 ( transaction_id INTEGER,
   price DECIMAL(7,2),
-  date INTEGER,
+  date BIGINT,
   auction_or_sale BOOL,
   item_id INTEGER NOT NULL,
   username CHAR(40) NOT NULL,
@@ -147,8 +147,8 @@ CREATE TABLE Sale
 );
 
 CREATE TABLE Auction
-( timestamp_start INTEGER,
-  timestamp_end   INTEGER,
+( timestamp_start BIGINT,
+  timestamp_end   BIGINT,
   item_id         INTEGER,
   PRIMARY KEY (timestamp_start, item_id),
   FOREIGN KEY (item_id) REFERENCES Sales_Item (item_id) 
@@ -158,9 +158,9 @@ CREATE TABLE Auction
 CREATE TABLE Bid
 ( bid_id                  INTEGER,
   amount                  DECIMAL(7,2),
-  cancellation_timestamp  INTEGER,
+  cancellation_timestamp  BIGINT,
   item_id                 INTEGER NOT NULL,
-  auction_timestamp_start INTEGER,
+  auction_timestamp_start BIGINT,
   username                CHAR(40) NOT NULL,
   is_auto                 BOOLEAN NOT NULL,
   max_amount              DECIMAL(7,2),
@@ -198,7 +198,7 @@ CREATE TABLE Customer_Service
 
 CREATE TABLE UPS
 ( shipping_id INTEGER,
-  shipping_date INTEGER,
+  shipping_date BIGINT,
   shipping_method CHAR(20),
   transaction_id INTEGER,
   shipping_address_id INTEGER,
