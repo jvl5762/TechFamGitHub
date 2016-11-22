@@ -29,7 +29,7 @@ CREATE TABLE Rating
 ( rating_id   INTEGER,
   explanation CHAR(128),
   value       REAL,
-  username    CHAR(40),
+  username    CHAR(40) UNIQUE,
   supplier_id INTEGER,
   PRIMARY KEY (supplier_id, rating_id),
   FOREIGN KEY (USERNAME) REFERENCES Register_Users (username),
@@ -140,10 +140,10 @@ CREATE TABLE Sale
   item_id INTEGER NOT NULL,
   username CHAR(40) NOT NULL,
   credit_card_number BIGINT NOT NULL,
+  address_id INTEGER NOT NULL,
   PRIMARY KEY (transaction_id),
   FOREIGN KEY (item_id) REFERENCES Sales_Item (item_id),
-  FOREIGN KEY (username) REFERENCES Register_Users (username),
-  FOREIGN KEY (credit_card_number) REFERENCES Credit_Card (number)
+  FOREIGN KEY (username, credit_card_number, address_id) REFERENCES pays_with (username, number, address_id)
 );
 
 CREATE TABLE Auction
@@ -162,12 +162,14 @@ CREATE TABLE Bid
   item_id                 INTEGER NOT NULL,
   auction_timestamp_start BIGINT,
   username                CHAR(40) NOT NULL,
+  credit_card_number 	  BIGINT NOT NULL,
+  address_id              INTEGER NOT NULL,
   is_auto                 BOOLEAN NOT NULL,
   max_amount              DECIMAL(7,2),
   PRIMARY KEY (bid_id, item_id, auction_timestamp_start),
   FOREIGN KEY (item_id, auction_timestamp_start) REFERENCES Auction (item_id, timestamp_start)
   ON DELETE CASCADE,
-  FOREIGN KEY (username) REFERENCES Register_Users (username)
+  FOREIGN KEY (username, credit_card_number, address_id) REFERENCES pays_with (username, number, address_id)
 );
 
 CREATE TABLE Custom_Shoe
