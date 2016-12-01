@@ -19,7 +19,7 @@
 	//	top price range
 	//	state
 	//	size
-	// output: the fields below (except the id's) - stored in ResultSet results;
+	// output: the fields below (except the id's) - stored in ResultSet result_items and result_categories;
 	//----------------------------------------------------------------------------------------------------------
 	// databases and fields used: 
 	//     	Sales_Item - count, brand, list_price, state, name
