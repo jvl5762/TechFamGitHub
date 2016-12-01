@@ -6,6 +6,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <body>
+	
 	<%
 	
 	//----------------------------------------------------------------------------------------------------------
@@ -22,8 +23,8 @@
 	//----------------------------------------------------------------------------------------------------------
 	// databases and fields used: 
 	//     	Sales_Item - count, brand, list_price, state, name
-	//		Footwear - size
-	//		category - category_id, category_name
+	//	Footwear - size
+	//	category - category_id, category_name
 	//     	suppliers - supplier_id, name
 	//----------------------------------------------------------------------------------------------------------
 	
@@ -31,29 +32,55 @@
 	Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/techfam?autoReconnect=true&useSSL=false","root", "root");
 	PreparedStatement select_items, select_category, select_supplier;
 	ResultSet results;
+	boolean validate = true;
 	
 	String sql_query = "SELECT S.brand, S.count, S.list_price, S.name, S.state, F.size, C.category_name, SU.name " + 
 							"FROM sales_item S, footwear F, category C, suppliers SU " + 
 							"WHERE S.item_id = F.item_id AND S.category_id = C.category_id AND S.supplier_id = SU.supplier_id ";
 
+	
 	// search keywords in name, brand, item description, category name, category description, supplier name
 	if (request.getParameter("keyword").length() > 0) {
 		sql_query += "AND (S.name LIKE '%" + request.getParameter("keyword") + "%' " + 
-						"OR S.brand LIKE '%" + request.getParameter("keyword") + "%' " + 
-						"OR S.description LIKE '%" + request.getParameter("keyword") + "%' " +
-						"OR C.category_name LIKE '%" + request.getParameter("keyword") + "%' " +
-						"OR C.description LIKE '%" + request.getParameter("keyword") + "%' " +
-						"OR SU.name LIKE '%" + request.getParameter("keyword") + "%') ";
+				"OR S.brand LIKE '%" + request.getParameter("keyword") + "%' " + 
+				"OR S.description LIKE '%" + request.getParameter("keyword") + "%' " +
+				"OR C.category_name LIKE '%" + request.getParameter("keyword") + "%' " +
+				"OR C.description LIKE '%" + request.getParameter("keyword") + "%' " +
+				"OR SU.name LIKE '%" + request.getParameter("keyword") + "%') ";
 	}
 	
 	// bottom end of price range
 	if (request.getParameter("bottom_price").length() > 0) {
-		sql_query += "AND S.list_price >= " + Long.parseLong(request.getParameter("bottom_price")) + " ";
+		// error handling if price range is not a number
+		try {
+			Long.parseLong(request.getParameter("bottom_price"));
+	    	}
+	    	catch(NumberFormatException e) {
+	        	validate = false;
+	    	}
+		if (validate) {
+			sql_query += "AND S.list_price >= " + Long.parseLong(request.getParameter("bottom_price")) + " ";
+		} 
+		else {
+			validate = true;
+		}
 	}
 	
 	// top end of price range
 	if (request.getParameter("top_price").length() > 0) {
-		sql_query += "AND S.list_price <= " + Long.parseLong(request.getParameter("top_price")) + " ";
+		// error handling if price range is not a number
+		try {
+			Long.parseLong(request.getParameter("top_price"));
+	    	}
+	    	catch(NumberFormatException e) {
+	        	validate = false;
+	    	}
+		if (validate) {
+			sql_query += "AND S.list_price <= " + Long.parseLong(request.getParameter("top_price")) + " ";
+		} 
+		else {
+			validate = true;
+		}
 	}
 	
 	// search by state
