@@ -35,8 +35,8 @@
 	boolean validate = true;
 	
 	String sql_query = "SELECT S.brand, S.count, S.list_price, S.name, S.state, F.size, C.category_name, SU.name " + 
-							"FROM sales_item S, footwear F, category C, suppliers SU " + 
-							"WHERE S.item_id = F.item_id AND S.category_id = C.category_id AND S.supplier_id = SU.supplier_id ";
+				"FROM sales_item S, footwear F, category C, suppliers SU " + 
+				"WHERE S.item_id = F.item_id AND S.category_id = C.category_id AND S.supplier_id = SU.supplier_id ";
 
 	
 	// search keywords in name, brand, item description, category name, category description, supplier name
