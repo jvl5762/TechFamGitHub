@@ -14,11 +14,11 @@
 	// price range, state, and size.
 	//----------------------------------------------------------------------------------------------------------
 	// input: any number of the following (all are in text form):
-	//			keyword
-	//			bottom price range
-	//			top price range
-	//			state
-	//			size
+	//	keyword
+	//	bottom price range
+	//	top price range
+	//	state
+	//	size
 	// output: the fields below (except the id's) - stored in ResultSet results;
 	//----------------------------------------------------------------------------------------------------------
 	// databases and fields used: 
