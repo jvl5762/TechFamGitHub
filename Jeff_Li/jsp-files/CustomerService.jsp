@@ -10,8 +10,7 @@
 <%
 	
 	//----------------------------------------------------------------------------------------------------------
-	// This jsp file displays the desired items depending on the user's search. Filters include keywords, 
-	// price range, state, and size.
+	// This jsp file displays the customer service page
 	//----------------------------------------------------------------------------------------------------------
 	// input: none
 	// output: the fields below (except the id) - stored in ResultSet result_service;
