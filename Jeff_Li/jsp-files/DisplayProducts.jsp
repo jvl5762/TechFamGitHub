@@ -7,7 +7,7 @@
 <html>
 <body>
 	
-	<%
+<%
 	
 	//----------------------------------------------------------------------------------------------------------
 	// This jsp file displays the desired items depending on the user's search. Filters include keywords, 
