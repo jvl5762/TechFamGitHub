@@ -119,17 +119,11 @@ CREATE TABLE Credit_Card
   name CHAR(40),
   type CHAR(20),
   expiration DATE,
-  PRIMARY KEY (number)
-);
-
-CREATE TABLE pays_with
-( username CHAR(40),
-  number BIGINT,
-  address_id INTEGER,
-  PRIMARY KEY (username, number, address_id),
+  username   CHAR(40),
+  billing_address_id INTEGER NOT NULL,
+  PRIMARY KEY (number),
   FOREIGN KEY (username) REFERENCES Register_Users (username),
-  FOREIGN KEY (number) REFERENCES Credit_Card (number),
-  FOREIGN KEY (address_id) REFERENCES Address (address_id)
+  FOREIGN KEY (billing_address_id) REFERENCES Address (address_id)
 );
 
 CREATE TABLE Sale
@@ -138,12 +132,12 @@ CREATE TABLE Sale
   date BIGINT,
   auction_or_sale BOOL,
   item_id INTEGER NOT NULL,
-  username CHAR(40) NOT NULL,
   credit_card_number BIGINT NOT NULL,
-  address_id INTEGER NOT NULL,
+  shipping_address_id INTEGER NOT NULL,
   PRIMARY KEY (transaction_id),
   FOREIGN KEY (item_id) REFERENCES Sales_Item (item_id),
-  FOREIGN KEY (username, credit_card_number, address_id) REFERENCES pays_with (username, number, address_id)
+  FOREIGN KEY (credit_card_number) REFERENCES Credit_Card (number),
+  FOREIGN KEY (shipping_address_id) REFERENCES Address (address_id)
 );
 
 CREATE TABLE Auction
@@ -161,15 +155,15 @@ CREATE TABLE Bid
   cancellation_timestamp  BIGINT,
   item_id                 INTEGER NOT NULL,
   auction_timestamp_start BIGINT,
-  username                CHAR(40) NOT NULL,
   credit_card_number 	  BIGINT NOT NULL,
-  address_id              INTEGER NOT NULL,
+  shipping_address_id     INTEGER NOT NULL,
   is_auto                 BOOLEAN NOT NULL,
   max_amount              DECIMAL(7,2),
   PRIMARY KEY (bid_id, item_id, auction_timestamp_start),
   FOREIGN KEY (item_id, auction_timestamp_start) REFERENCES Auction (item_id, timestamp_start)
   ON DELETE CASCADE,
-  FOREIGN KEY (username, credit_card_number, address_id) REFERENCES pays_with (username, number, address_id)
+  FOREIGN KEY (credit_card_number) REFERENCES Credit_Card (number),
+  FOREIGN KEY (shipping_address_id) REFERENCES Address (address_id)
 );
 
 CREATE TABLE Custom_Shoe
@@ -203,9 +197,7 @@ CREATE TABLE UPS
   shipping_date BIGINT,
   shipping_method CHAR(20),
   transaction_id INTEGER,
-  shipping_address_id INTEGER,
   PRIMARY KEY (shipping_id),
-  FOREIGN KEY (transaction_id) REFERENCES Sale (transaction_id),
-  FOREIGN KEY (shipping_address_id) REFERENCES Address (address_id)
+  FOREIGN KEY (transaction_id) REFERENCES Sale (transaction_id)
 );
 
