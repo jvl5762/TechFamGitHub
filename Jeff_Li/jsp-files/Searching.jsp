@@ -30,7 +30,7 @@
 	
 	
 	Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/techfam?autoReconnect=true&useSSL=false","root", "root");
-	PreparedStatement select_items, select_category, select_supplier;
+	PreparedStatement select_items;
 	ResultSet results;
 	boolean validate = true;
 	
