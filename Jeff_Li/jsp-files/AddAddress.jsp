@@ -9,17 +9,14 @@
 	<%
 	
 	//--------------------------------------------------------------------
-	// This jsp file allows a user to rate another user,
-	// which inserts that information into the rating table
+	// This jsp file adds addresses for suppliers
 	//--------------------------------------------------------------------
-	// input: supplier_id of the user rating and username 
-	//        of the user being rated (in that order)
-	// output: if rating was succesful
+	// input: supplier_id of the user
+	// output: if adding was succesful
 	//--------------------------------------------------------------------
 	// databases and fields used: 
 	//     suppliers - supplier_id (this is given)
-	//     register_user - username (stored in result_username)
-	//     rating - rating_id, explanation, value, username, supplier_id
+	//     address - all fields
 	//--------------------------------------------------------------------
 	
 	
