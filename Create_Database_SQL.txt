@@ -29,7 +29,7 @@ CREATE TABLE Rating
 ( rating_id   INTEGER,
   explanation CHAR(128),
   value       REAL,
-  username    CHAR(40) UNIQUE,
+  username    CHAR(40),
   supplier_id INTEGER,
   PRIMARY KEY (supplier_id, rating_id),
   FOREIGN KEY (USERNAME) REFERENCES Register_Users (username),
@@ -200,4 +200,18 @@ CREATE TABLE UPS
   PRIMARY KEY (shipping_id),
   FOREIGN KEY (transaction_id) REFERENCES Sale (transaction_id)
 );
+
+CREATE TABLE Item_Review
+( review_id   INTEGER,
+  explanation CHAR(128),
+  value       REAL,
+  username    CHAR(40),
+  item_id INTEGER,
+  PRIMARY KEY (item_id, review_id),
+  FOREIGN KEY (USERNAME) REFERENCES Register_Users (username),
+  FOREIGN KEY (item_id) REFERENCES Sales_Item (item_id)
+  ON DELETE CASCADE
+);
+
+
 
