@@ -11,20 +11,27 @@
 	//--------------------------------------------------------------------
 	// This jsp file adds addresses for suppliers
 	//--------------------------------------------------------------------
-	// input: supplier_id of the user
+	// input: supplier_id of the user and all address fields
 	// output: if adding was succesful
 	//--------------------------------------------------------------------
 	// databases and fields used: 
-	//     suppliers - supplier_id (this is given)
+	//     suppliers - supplier_id
 	//     address - all fields
 	//--------------------------------------------------------------------
 	
 	
-	Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/techfam?autoReconnect=true&useSSL=false","root", "root");
-	PreparedStatement select_address_id, insert_address;
+	Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/techfam?autoReconnect=true&useSSL=false","root", "hiren4802");
+	PreparedStatement select_address_id, insert_address, incrementID;
 	ResultSet result, result_max_id;
-	int increment_id;
+	int new_address_ID;
 	
+	try {
+		Long temp = Long.parseLong(request.getParameter("zip"));
+	}
+	catch (NumberFormatException e) {
+		// must stop program and display error warning - zip is not in correct form
+		System.out.printf("zip must be a number");
+	}
 	
 	// find the largest address_id
 	incrementID = con.prepareStatement("SELECT MAX(address_id) FROM address");
@@ -40,6 +47,11 @@
 	insert_address.setString(4, request.getParameter("city"));
 	insert_address.setString(5, request.getParameter("state"));
 	insert_address.setLong(6, Long.parseLong(request.getParameter("zip")));
-	insert_address.setLong(7, new_supplier_ID);
-	insert_address.executeUpdate();
+	insert_address.setLong(7, Long.parseLong(request.getParameter("supplier_id")));
+	if (insert_address.executeUpdate() == 1) {
+		System.out.printf("success");
+	}
+	else {
+		System.out.printf("fail");
+	}
 %>
