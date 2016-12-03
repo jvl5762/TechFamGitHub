@@ -8,7 +8,17 @@
 <title>TechFam</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
-<body>
+<body onLoad="DisplayImage()">
+<script>
+function DisplayImage() {
+    var x = document.createElement("IMG");
+    x.setAttribute("src", "2.png");
+    x.setAttribute("width", "304");
+    x.setAttribute("width", "228");
+    x.setAttribute("alt", "image");
+    document.body.appendChild(x);
+}
+</script>
 <div class="w3-topnav w3-black">
 	<a href="Login.html">Home</a>
   	<a href="Login.jsp">Suppliers</a>
@@ -43,7 +53,8 @@
 	result_item = select_item.executeQuery();
 	result_item.next();	// select the item result - this is needed for finding the category and supplier
 	
-	
+	//set session
+	session.setAttribute("ItemId", request.getParameter("item_id"));
 	// find category where the item is categorized
 	select_category = con.prepareStatement("SELECT description FROM category WHERE category_id = ?");
 	select_category.setInt(1, result_item.getInt("category_id"));
@@ -60,10 +71,11 @@
 	
 // this is just a test display 					
 %>
-
+<div class="w3-container" id='image'/>
 <div class="w3-container w3-red">
   <h1>Item Description</h1>
 </div>
+
 <table class="w3-table w3-striped w3-bordered w3-border w3-hoverable" style="width:100%;">
 <tr>
     <th>Item Name</th>
@@ -86,4 +98,5 @@
     <td><%= result_item.getString("count") %></td>
   </tr>
   </table>
+<a class="w3-btn w3-ripple w3-teal" href="DirectBuy.jsp" >Buy this item</a> 
 </body>
