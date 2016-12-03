@@ -26,21 +26,20 @@
 	int increment_id;
 	
 	
-	// obtain max address_id and increment by one - this is the address_id
-	select_address_id = con.prepareStatement("SELECT MAX(address_id) FROM address");
-	result_max_id = select_address_id.executeQuery();
-	result_max_id.next();
-	increment_id = result_max_id.getInt(1) + 1;
+	// find the largest address_id
+	incrementID = con.prepareStatement("SELECT MAX(address_id) FROM address");
+	result = incrementID.executeQuery();
 	
-	
-	// insert rating for that user
-	insert_address = con.prepareStatement("INSERT INTO address VALUES (?,?,?,?,?)");
-	insert_address.setInt(1, increment_id);
+	//insert new user info into address
+	result.next();
+	new_address_ID = result.getInt(1) + 1;
+	insert_address = con.prepareStatement("INSERT INTO address " + "VALUES (?,?,?,?,?,?,?)");
+	insert_address.setLong(1, new_address_ID);
 	insert_address.setString(2, request.getParameter("app_num"));
 	insert_address.setString(3, request.getParameter("street_address"));
 	insert_address.setString(4, request.getParameter("city"));
 	insert_address.setString(5, request.getParameter("state"));
-	insert_address.setInt(6, Integer.parseInt(request.getParameter("zip")));
-	insert_address.setInt(7, Integer.parseInt(request.getParameter("supplier_id")));
+	insert_address.setLong(6, Long.parseLong(request.getParameter("zip")));
+	insert_address.setLong(7, new_supplier_ID);
 	insert_address.executeUpdate();
 %>
