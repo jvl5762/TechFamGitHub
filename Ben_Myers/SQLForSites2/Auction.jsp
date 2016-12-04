@@ -2,6 +2,9 @@
     pageEncoding="UTF-8"%>
 <%@page import="java.sql.*"%>
 <%@page import="javax.sql.*"%>
+<%@page import="test.Get_Drop_Downs"%>
+<%@page import="java.util.HashMap"%>
+<%@page import="java.util.ArrayList"%>
 <%Class.forName("com.mysql.jdbc.Driver"); %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -32,6 +35,9 @@ function DisplayImage() {
 	String DATABASE_CONNECT_STRING = "jdbc:mysql://localhost:3306/" + DATABASE_NAME + 
 			"?autoReconnect=true&useSSL=false";
 	String DRIVER_LOC = "com.mysql.jdbc.Driver";
+	
+	String username = "ben2";
+	int supplier_id = 2;
 	
 	String SQL_AUCTION = 
 			"SELECT TA.item_id, TA.name, TA.description, TA.category_name, "+
@@ -65,6 +71,10 @@ function DisplayImage() {
 		select_auction = con.prepareStatement(SQL_AUCTION);
 		select_auction.setLong(1, System.currentTimeMillis()/1000);
 		result_auction = select_auction.executeQuery();
+		
+		Get_Drop_Downs gdd = new Get_Drop_Downs();
+		HashMap<Integer, String> addresses = gdd.get_addresses(supplier_id);
+		HashMap<Long, String> credit_cards = gdd.get_credit_cards(username);
 	
 // this is just a test display 					
 %>
@@ -113,8 +123,16 @@ function DisplayImage() {
 <input type="hidden" name="item_id" value=<%= item_id%> />
 <input type="hidden" name="auction_timestamp_start" value=<%=start %> />
 Amount :<input type="number" name="amount" min=<%= amount + 2.0f %> />
-<input type="hidden" name="credit_card" value="379580062565888" />
-<input type="hidden" name="address_id" value="5" />
+Credit Card: <select name = "credit_card">
+	<%for(Long number : credit_cards.keySet()){ %>
+		<option value=<%= number.toString()%>><%= credit_cards.get(number) %></option>
+	<%} %>
+</select>
+Address: <select name = "address_id">
+	<%for(Integer add_id : addresses.keySet()){ %>
+		<option value=<%= add_id.toString()%>><%= addresses.get(add_id) %></option>
+	<%} %>
+</select>
 <input type="hidden" name="is_auto" value="false"/>
 <input type="hidden" name="max_amount" value= "0"/>
 <input button value="Bid" type="submit"/>
@@ -124,10 +142,18 @@ Amount :<input type="number" name="amount" min=<%= amount + 2.0f %> />
 <input type="hidden" name="item_id" value=<%= item_id%> />
 <input type="hidden" name="auction_timestamp_start" value=<%=start %> />
 <input type="hidden" name="amount" value=<%= amount + 2.0f %> />
-<input type="hidden" name="credit_card" value="379580062565888" />
-<input type="hidden" name="address_id" value="5" />
-<input type="hidden" name="is_auto" value="true"/>
 Max Amount :<input type="number" name="max_amount" min=<%= amount + 2.0f %>/>
+Credit Card: <select name = "credit_card">
+	<%for(Long number : credit_cards.keySet()){ %>
+		<option value=<%= number.toString()%>><%= credit_cards.get(number) %></option>
+	<%} %>
+</select>
+Address: <select name = "address_id">
+	<%for(Integer add_id : addresses.keySet()){ %>
+		<option value=<%= add_id.toString()%>><%= addresses.get(add_id) %></option>
+	<%} %>
+</select>
+<input type="hidden" name="is_auto" value="true"/>
 <input button value="Auto Bid" type="submit"/>
 </form>
 
