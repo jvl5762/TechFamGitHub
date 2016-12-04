@@ -1,0 +1,125 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@page import="java.sql.*"%>
+<%@page import="javax.sql.*"%>
+<%Class.forName("com.mysql.jdbc.Driver"); %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<title>TechFam</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+<body>
+	<%
+	
+	//-----------------------------------------------------
+	// databases and fields used: register_user - username, password
+	// return: if login was successful or failed
+	//-----------------------------------------------------
+	
+	Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/techfam?autoReconnect=true&useSSL=false","root", "1111");
+	PreparedStatement verify;
+	PreparedStatement Items;
+	
+	session.setAttribute("UserName", request.getParameter("username"));
+	
+	verify = con.prepareStatement("SELECT * FROM register_users WHERE username = ? AND password = SHA1(?)");
+	verify.setString(1, request.getParameter("username"));
+	verify.setString(2, request.getParameter("password"));
+	ResultSet result = verify.executeQuery();
+	String username = null;
+	String Supplierid = null;
+	if(result.next()){
+		username = result.getString("username");
+		Supplierid = result.getString("supplier_id");	
+	}
+	else{
+		 String redirectURL = "http://localhost:8080/hellow/Login.html";
+		 response.sendRedirect(redirectURL);
+	}
+	%>
+	<%Items = con.prepareStatement("SELECT * FROM Sales_Item");
+	ResultSet Itemlist = Items.executeQuery();
+	%>
+<ul class="w3-navbar w3-black">
+    <li><a href="Login.html">Home</a></li>
+    <li><a href="EnterData.jsp">Seller List</a></li>
+    <li><a href="EnterData.jsp">Auction</a></li>
+    
+    <li class="w3-dropdown-hover w3-hover-blue">
+      <a class="w3-hover-blue" href="#">Women <i class="fa fa-caret-down"></i></a>
+      <div class="w3-dropdown-content w3-white w3-card-4">
+        <a href="#">Boots</a>
+        <a href="#">Flats</a>
+        <a href="#">Pumps</a>
+        <a href="#">Slippers</a>
+        <a href="#">Wedges</a>
+      </div>
+    </li>
+    <li class="w3-dropdown-hover w3-hover-blue">
+      <a class="w3-hover-blue" href="#">Men <i class="fa fa-caret-down"></i></a>
+      <div class="w3-dropdown-content w3-white w3-card-4">
+        <a href="#">Athletic</a>
+        <a href="#">Boots</a>
+        <a href="#">Casual</a>
+        <a href="#">Dress shoes</a>
+        <a href="#">Sandals</a>
+        <a href="#">Slippers</a>
+      </div>
+    </li>
+    <li class="w3-dropdown-hover w3-hover-blue">
+      <a class="w3-hover-blue" href="#">Kids <i class="fa fa-caret-down"></i></a>
+      <div class="w3-dropdown-content w3-white w3-card-4">
+        <a href="#">Girls</a>
+        <a href="#">Boys</a>
+        <a href="#">Babies</a>
+      </div>
+    </li>
+      
+         <li class="w3-dropdown-hover w3-hover-blue">
+      <a class="w3-hover-blue" href="#">Accessories <i class="fa fa-caret-down"></i></a>
+      <div class="w3-dropdown-content w3-white w3-card-4">
+        <a href="#">Socks and legwear</a>
+        <a href="#">Shoe care products</a>
+        <a href="#">Bags</a>
+        <a href="#">sunglasses</a>
+      </div>
+    </li> 
+  	<input type="button" class="w3-btn" style="float:right; padding: 10px 16px !important;" value="myprofile" onclick="window.document.location.href='Profile.jsp?supplier_id=<%=Supplierid%>'"/>
+
+</ul>
+
+	
+<div class="w3-panel w3-card w3-deep-orange"><p>Item Listing</p></div>
+<table class="w3-table w3-striped w3-bordered w3-border w3-hoverable" style="width:50%;">
+<thead>
+<tr>
+    <th>Brand</th>
+    <th>Price</th> 
+    <th>Description</th> 
+    <th>Reserved Price</th> 
+    <th>Name</th> 
+    <th>Item ID</th> 
+  </tr>
+
+<div class="w3-panel w3-right">
+  <br><label>Keyword</label>
+  <input class="w3-input" type="text">	<br>
+  <button class="w3-btn w3-blue w3-round">Search</button>
+  </div>
+	
+</thead>
+  <%Items = con.prepareStatement("SELECT * FROM Sales_Item");
+	Itemlist = Items.executeQuery();
+	%>
+	<%while(Itemlist.next()){%>
+  <tr>
+    <td><a href="DisplayItem.jsp?item_id=<%=Itemlist.getString("item_id")%>"><%= Itemlist.getString("brand") %></a></td>
+    <td><a href="DisplayItem.jsp?item_id=<%=Itemlist.getString("item_id")%>"><%= Itemlist.getString("list_price") %></a></td> 
+    <td><a href="DisplayItem.jsp?item_id=<%=Itemlist.getString("item_id")%>"><%= Itemlist.getString("description") %></a></td>
+    <td><a href="DisplayItem.jsp?item_id=<%=Itemlist.getString("item_id")%>"><%= Itemlist.getString("reserved_price") %></a></td>
+    <td><a href="DisplayItem.jsp?item_id=<%=Itemlist.getString("item_id")%>"><%= Itemlist.getString("name") %></a></td>
+    <td><a href="DisplayItem.jsp?item_id=<%=Itemlist.getString("item_id")%>"><%= Itemlist.getString("item_id") %></a></td>
+  </tr>
+  <% } %>
+
+</table>
