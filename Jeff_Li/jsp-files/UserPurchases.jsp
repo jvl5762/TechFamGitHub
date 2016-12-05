@@ -46,10 +46,12 @@
 	    	select_address.setInt(1, result_sale.getInt(7));
 	    	result_address = select_address.executeQuery(); // contains items bought
 	    	
-	    	while (result_item.next()) {
-	    		System.out.printf("%s", result_item.getString("name"));
-	    	}
-	    	
+			while (result_item.next()) {
+				System.out.printf("%s", result_item.getString("name"));
+			}
+	    		while (result_address.next()) {
+				System.out.printf("%s", result_address.getString("street_address"));
+			}
 	   	}
 	}
 					
