@@ -26,8 +26,8 @@
 	
 	
 	Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/techfam?autoReconnect=true&useSSL=false","root", "noclown1");
-	PreparedStatement select_user, select_ratings;
-	ResultSet result_user, result_ratings;
+	PreparedStatement select_user, select_ratings, select_items, select_auction;
+	ResultSet result_user, result_ratings, result_items, result_auction;
 	String name = null;
 	String username = null;
 	String age = null;
@@ -35,10 +35,31 @@
 	String income = null;
 	String lastuser = null;
 	String supplier = null;
+	String item_name = null;
+	String brand = null;
+	String list_price = null;
+	String state = null;
+	
 	// find basic user info
 	select_user = con.prepareStatement("SELECT s.name, ru.username, ru.age, ru.gender, ru.income " + 
 					   "FROM suppliers s, register_users ru " + 
 					   "WHERE s.supplier_id = ? and ru.supplier_id = ?");
+	
+	String SQL_ITEMS = 	"SELECT * FROM "+
+			"(SELECT * "+
+			"FROM sales_item S "+
+			"WHERE S.supplier_id = ?) AS T1 "+
+			"LEFT JOIN "+ 
+			"(SELECT H.item_id as item_id2, I.image, H.color "+
+			"FROM has_visual H, image I "+
+			"WHERE I.img_id = H.img_id) AS T2 "+
+			"ON T1.item_id = T2.item_id2";
+	
+	int supplier_id = Integer.parseInt(request.getParameter("supplier_id"));
+	select_items = con.prepareStatement(SQL_ITEMS);
+	select_items.setInt(1, supplier_id);
+	result_items = select_items.executeQuery();
+	
 	select_user.setInt(1, Integer.parseInt(request.getParameter("supplier_id")));
 	select_user.setInt(2, Integer.parseInt(request.getParameter("supplier_id")));
 	supplier = request.getParameter("supplier_id");
@@ -56,6 +77,13 @@
 	// result_ratings contains all ratings for user
 	result_ratings = select_ratings.executeQuery();
 			
+	// find all the items the seller has
+	select_items = con.prepareStatement("SELECT * " + 
+			   		      "FROM sales_item " + 
+			   		      "WHERE supplier_id = ?");
+	select_items.setInt(1, Integer.parseInt(request.getParameter("supplier_id")));
+			
+
 	while(result_user.next()){
 		name = result_user.getString("name");
 		username = result_user.getString("username");
@@ -68,10 +96,10 @@
 // this is just a test display 					
 	}%>
 <div class="w3-topnav w3-black">
-	<a href="Login.html">Home</a>
+	<a href="Login.jsp">Home</a>
   	<a href="Login.jsp">Suppliers</a>
- 	<a href="#">Link 2</a>
-  	<a href="#">Link 3</a>
+ 	<a href="Auction.jsp">Auction</a>
+  	<a href="AddSales_ItemPage.jsp">Add an Item</a>
 </div>
 
 <p style='color:red'> This is the user</p>
@@ -95,6 +123,37 @@
   </tr>
 </table>
 <div class="w3-container">
+  <h2>My Items</h2>
+</div>
+<table class="w3-table w3-striped w3-bordered w3-border w3-hoverable" style="width:100%;">
+<thead>
+<tr>
+<th>Image</th>
+<th>Item Name</th>
+<th>Count</th>
+<th>Brand</th>
+<th>State</th>
+<th>Description</th>
+<th>List Price</th>
+<th>Reserved Price</th>
+</tr>
+</thead>
+    <%while(result_items.next()){%>
+  <tr>
+	 <td><%= result_items.getString("image") %></td>
+  	<td><%= result_items.getString("name") %></td>
+  	<td><%= result_items.getString("count") %></td>
+    <td><%= result_items.getString("brand") %></td>
+    <td><%= result_items.getString("state") %></td>
+    <td><%= result_items.getString("description") %></td>
+    <td><%= result_items.getString("list_price") %></td>
+    <td><%= result_items.getString("reserved_price") %></td>
+  </tr>
+  <%} %>
+  </table>
+</body>
+
+<div class="w3-container">
   <h2>Comments</h2>
 </div>
 <table class="w3-table w3-striped w3-bordered w3-border w3-hoverable" style="width:100%;">
@@ -113,7 +172,6 @@
   </tr>
   <%} %>
   </table>
-</body>
 
 <form class="w3-form" action="AddComment.jsp">
   <h2>Input Form</h2>
