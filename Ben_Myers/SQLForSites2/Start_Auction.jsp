@@ -6,6 +6,10 @@
 
 <%@page import="javax.sql.*"%>
 
+<%@page import="java.util.Calendar"%>
+
+<%@page import="java.text.SimpleDateFormat"%>
+
 <%Class.forName("com.mysql.jdbc.Driver"); %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -24,7 +28,8 @@
 //--------------------------------------------------------------------
 
 // required inputs: item_id (Integer) 		- item id of item to be auctioned
-// 					timestamp_end (Long) 	- timestamp of when to end the auction
+// 					timestamp_end (String) 	- timestamp of when to end the auction
+//											- yyyy-MM-dd HH:mm:ss
 
 // output: if adding the item was a success
 
@@ -45,6 +50,8 @@ String DATABASE_CONNECT_STRING = "jdbc:mysql://localhost:3306/" + DATABASE_NAME 
 String DRIVER_LOC = "com.mysql.jdbc.Driver";
 String SUCCESS_LABEL = "AddSales_Item";
 
+String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
+
 boolean IDENTIFY_NOT_AUCTION = false;
 
 Connection con = null;
@@ -53,6 +60,9 @@ ResultSet result_count;
 
 int item_id;
 int count;
+String end_time_str;
+Calendar cal = Calendar.getInstance();
+SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
 
 try{
 	con = DriverManager.getConnection(DATABASE_CONNECT_STRING, DATABASE_USERNAME, DATABASE_PASSWORD);
@@ -60,6 +70,10 @@ try{
 	// get the count of the item to be auctioned
 
 	item_id = Integer.parseInt(request.getParameter("item_id"));
+	
+	System.out.println(request.getParameter("timestamp_end"));
+	
+	cal.setTime(sdf.parse(request.getParameter("timestamp_end")));	
 	
 	product_count = con.prepareStatement("SELECT count FROM Sales_Item WHERE item_id = ?");
 	
@@ -81,7 +95,7 @@ try{
 		
 		add_to_auction.setLong(1, System.currentTimeMillis()/1000);
 		
-		add_to_auction.setLong(2, Long.parseLong(request.getParameter("timestamp_end")));
+		add_to_auction.setLong(2, cal.getTimeInMillis()/1000);
 		
 		add_to_auction.setInt(3, item_id);
 		
