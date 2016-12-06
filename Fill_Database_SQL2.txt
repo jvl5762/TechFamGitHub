@@ -366,7 +366,7 @@ VALUES
 (77,46,'Nike',75,'new ','Slip on a pair of Nike Men''s Air Versatile Basketball Sneakers and experience harder cuts, quicker take-offs and plusher landings during your next game. A combination of light and thin outsoles, Air-Sole units for comfort and remarkable traction make for a basketball shoe you don''t want to skip out on.','Men''s Air Versatile Basketball Sneakers from Finish Line',NULL,212,34,34),
 (78,61,'Polo Ralph Lauren',350,'new ','So awesome and cool, the Mersey boots from Polo Ralph Lauren make it easy to look effortlessly stylish.','Polo Ralph Lauren Men''s Mersey Pull-On Boots',NULL,226,35,35),
 (79,3,'Timberland',170,'new ','Timberland Men''s Earthkeeper Original 6"" Boots offer rugged good looks and great comfort.','Men''s Earthkeeper Original 6"" Boot',NULL,226,22,22),
-(80,59,'North Face',110,'new ','The North Face is no stranger to cold-weather protection, and the same goes for their men''s boots. The Chillkat II lace-ups are highly versatile, all-purpose winter boots for men designed for exceptional grip on frozen surfaces with PrimaLoft? Eco insulation so your toes will stay toasty even in -25øF.','Men''s Chilkat II Waterproof Lace-Up Boots',NULL,224,36,36),
+(80,59,'North Face',110,'new ','The North Face is no stranger to cold-weather protection, and the same goes for their men''s boots. The Chillkat II lace-ups are highly versatile, all-purpose winter boots for men designed for exceptional grip on frozen surfaces with PrimaLoft? Eco insulation so your toes will stay toasty even in -20F.','Men''s Chilkat II Waterproof Lace-Up Boots',NULL,224,36,36),
 (81,98,'Timberland',190,'new ','Timberland has made their iconic men''s boots even better by adding a new comfort system to the inside, while preserving the classic exterior. Their exclusive anti-fatigue technology was first used in their PRO work boots for people who are on their feet all day. These 6-inch waterproof boots for men return energy to your feet so you stay energized all day and reduce fatigue by absorbing shock and reducing footfall pressure. Also features a unique molded, inverted cones collapse and return in key pressure zones.','Men''s 6"" Premium Waterproof Boots',NULL,224,22,22),
 (82,50,'Polo Ralph Lauren',195,'new ','Polo Ralph Lauren adds steampunk style to your look with these super fashionable wingtip boots.','Polo Ralph Lauren Men''s Nickson Wingtip Boots',NULL,222,35,35),
 (83,95,'Clarks',80,'new ','At work or on the town, these business-casual loafers from Clarks will keep you on your toes in comfort.','Men''s Cotrell Step Bike Toe Casual Slip-Ons',NULL,230,37,37),
@@ -828,12 +828,12 @@ VALUES
 INSERT INTO UPS
 (shipping_id,shipping_date ,shipping_method,transaction_id)
 VALUES
-(1,1472666517,'ground',1),
-(2,1472752917,'ground',2),
-(3,1472839317,'priority',3),
-(4,1472925717,'ground',4),
-(5,1473012117,'ground',5),
-(6,1478471745,'ground',6);
+(1,1472666517,'Shipped',1),
+(2,1472752917,'Not Yet Shipped',2),
+(3,1472839317,'Delivered',3),
+(4,1472925717,'Shipped',4),
+(5,1473012117,'Shipped',5),
+(6,1478471745,'Not Yet Shipped',6);
 
 INSERT INTO Customer_Service
 (customer_service_id,email,faqs,phone_number)
