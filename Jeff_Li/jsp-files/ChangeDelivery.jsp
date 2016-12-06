@@ -13,23 +13,20 @@
 <%
 	
 	//----------------------------------------------------------------------------
-	// This jsp file displays sale and ups information for company user
+	// This jsp file changes delivery status of a transaction
 	//----------------------------------------------------------------------------
-	// input: no input - only need to sign in with correct username and password
-	// output: if adding was succesful
+	// input: transaction_id and new shippping status
+	// output: goes back to shipping information page
 	//----------------------------------------------------------------------------
 	// databases and fields used: 
-	//     sale
 	//     ups
 	//----------------------------------------------------------------------------
 	
 	
 	Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/techfam?autoReconnect=true&useSSL=false","root", "root");
 	PreparedStatement insert_ups;
-	ResultSet result_ups;
-	String query_ups = "update ups set shipping_method = ? where transaction_id = ?";
 	
-	insert_ups = con.prepareStatement("update ups set shipping_method = ? where shipping_id = ?");
+	insert_ups = con.prepareStatement("update ups set shipping_method = ? where transaction_id = ?");
 	insert_ups.setString(1, request.getParameter("shipping_method"));
 	insert_ups.setLong(2, Long.parseLong(request.getParameter("transaction_id")));
 	insert_ups.executeUpdate();
