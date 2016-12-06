@@ -21,11 +21,11 @@
 	//	bottom price range
 	//	top price range
 	//	state
-	//	size
+	//	category_id
 	// output: the fields below (except the id's) - stored in ResultSet results;
 	//----------------------------------------------------------------------------------------------------------
 	// databases and fields used: 
-	//     	Sales_Item - count, brand, list_price, state, name
+	//     	Sales_Item - item_id, count, brand, list_price, state, name
 	//	Footwear - size
 	//	category - category_id, category_name
 	//     	suppliers - supplier_id, name
