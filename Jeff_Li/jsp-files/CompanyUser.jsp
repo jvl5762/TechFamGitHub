@@ -16,10 +16,11 @@
 	// This jsp file displays ups information for company user
 	//----------------------------------------------------------------------------
 	// input: no input - only need to sign in with correct username and password
-	// output: if adding was succesful
+	// output: a page with shipping information
 	//----------------------------------------------------------------------------
 	// databases and fields used: 
 	//     address
+	//	sale
 	//     ups
 	//----------------------------------------------------------------------------
 	
