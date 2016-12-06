@@ -47,9 +47,8 @@
 		<thead>
 	<tr>
 	<th>transaction_id</th>
-	<th>Purchase Date</th>
-	<th>Purchase Method</th>
 	<th>item_id</th>
+	<th>Purchase Date</th>
 	<th>Apartment Number</th>
 	<th>Street Address</th>
 	<th>City</th>
@@ -64,11 +63,8 @@
   <tr>
   	<%result_sale.next(); %>
   	<td><%= result_sale.getString("transaction_id") %></td>
+  	<td><%= result_sale.getString("item_id") %></td>
     <td><%= result_sale.getString("date") %></td>
-    <%if (result_sale.getInt("auction_or_sale") == 1) {auction_or_sale = "auctioned";}
-      else {auction_or_sale = "direct buy";} %>
-    <td><%= auction_or_sale %></td>
-    <td><%= result_sale.getString("item_id") %></td>
     <%result_address.next(); %>
     <td><%= result_address.getString("app_num") %></td>
     <td><%= result_address.getString("street_address") %></td>
