@@ -33,22 +33,21 @@
 	//Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/techfam?autoReconnect=true&useSSL=false","root", "noclown1");
 	Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/techfamforever?autoReconnect=true&useSSL=false","root", "TechFam");
 	
-	PreparedStatement select_user, select_ratings, select_items, select_auction, select_sale, select_purchases, select_address, select_auction2;
-	ResultSet result_user, result_ratings, result_items, result_auction, result_sale, result_purchases, result_address, result_auction2;
+	PreparedStatement select_user, select_ratings, select_items, select_auction, select_purchases, select_address, select_auction2;
+	ResultSet result_user, result_ratings, result_items, result_auction, result_purchases, result_auction2;
 	
-	String sql_query_sales = "SELECT * FROM sale S, Credit_Card C WHERE S.credit_card_number = C.number AND C.username = ?";
-	String sql_query_purchases = "SELECT T1.item_id, T1.brand, T1.name, T1.state, T2.image, T2.color FROM "+
-			"(SELECT S.item_id, S.brand, S.name, S.state "+
-			"FROM sales_item S, sale P, credit_card C "+
+	String sql_query_purchases = "SELECT T1.item_id, T1.brand, T1.price, T1.name, T1.state, T1.street_address, T2.image, T2.color FROM "+
+			"(SELECT S.item_id, S.brand, S.name, S.state, P.price, A.street_address "+
+			"FROM sales_item S, sale P, credit_card C, address A "+
 			"WHERE S.item_id = P.item_id AND " +
-			"P.credit_card_number = C.number AND "+
+			"P.credit_card_number = C.number AND " + 
+			"A.address_id = P.shipping_address_id AND "+
 			"C.username = ? )AS T1 "+
 			"LEFT JOIN "+ 
 			"(SELECT H.item_id as item_id2, I.image, H.color "+
 			"FROM has_visual H, image I "+
 			"WHERE I.img_id = H.img_id) AS T2 "+
 			"ON T1.item_id = T2.item_id2";
-	String sql_query_address = "SELECT * FROM address a, Credit_Card C WHERE A.address_id = C.billing_address_id AND C.username = ?";
 	String SQL_AUCTION = 
 			"SELECT TA.item_id, TA.name, TA.description, TA.category_name, "+
 			"TA.timestamp_start, TA.timestamp_end, TA.amount, TA.reserved_price, TP.image FROM " +
@@ -138,17 +137,6 @@
 	select_purchases.setString(1, username);
 	result_purchases = select_purchases.executeQuery(); // contain item information of user purchases
 	
-	
-	// Get all addresses
-	select_address = con.prepareStatement(sql_query_address);
-	select_address.setString(1, username);
-	result_address = select_address.executeQuery();	// contain shipped to address
-	
-	// Get all sales
-	select_sale = con.prepareStatement(sql_query_sales);
-	select_sale.setString(1, username);
-	result_sale = select_sale.executeQuery(); // contain sales involving user's credit card
-	
 // this is just a test display 					
 	%>
 <div class="w3-topnav w3-black">
@@ -198,10 +186,8 @@
   	<td><%= result_purchases.getString("name") %></td>
     <td><%= result_purchases.getString("brand") %></td>
     <td><%= result_purchases.getString("state") %></td>
-    <%result_sale.next(); %>
-    <td><%= result_sale.getString("price") %></td>
-    <%result_address.next(); %>
-    <td><%= result_address.getString("street_address") %></td>
+    <td><%= result_purchases.getString("price") %></td>
+    <td><%= result_purchases.getString("street_address") %></td> 
   </tr>
   <%} %>
   </table>
