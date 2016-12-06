@@ -21,11 +21,12 @@
 	//	bottom price range
 	//	top price range
 	//	state
-	//	category_id
+	//	size
+	// can also order outputs by name and list_price (ascending or descending)
 	// output: the fields below (except the id's) - stored in ResultSet results;
 	//----------------------------------------------------------------------------------------------------------
 	// databases and fields used: 
-	//     	Sales_Item - item_id, count, brand, list_price, state, name
+	//     	Sales_Item - count, brand, list_price, state, name
 	//	Footwear - size
 	//	category - category_id, category_name
 	//     	suppliers - supplier_id, name
@@ -35,6 +36,7 @@
 	Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/techfam?autoReconnect=true&useSSL=false","root", "root");
 	PreparedStatement select_items, select_category, select_category2;
 	ResultSet results, result_category, result_category2;
+	int comma = 0;
 	
 	String sql_query = "SELECT S.item_id, S.brand, S.count, S.list_price, S.name, S.state, F.size, C.category_name, C.description, SU.name, SU.supplier_id " + 
 				"FROM sales_item S, footwear F, category C, suppliers SU " + 
@@ -91,6 +93,38 @@
 	try {
 		sql_query += "AND S.list_price <= " + Long.parseLong(request.getParameter("top_price")) + " ";
     } catch(NumberFormatException e) {}
+	
+	// Order by list_price
+	try {
+		if (request.getParameter("order_price").length() > 0) {
+			if (Integer.parseInt(request.getParameter("order_price")) == 1) {
+				sql_query += "ORDER BY S.list_price DESC";
+			}
+			else {
+				sql_query += "ORDER BY S.list_price ASC";
+			}
+			comma = 1;
+		}
+	} catch(NullPointerException e) {}
+	
+	// Order by alphabetical order
+	try {
+		if (request.getParameter("order_name").length() > 0) {
+			if (comma == 1) {
+				sql_query += ", ";
+			}
+			else {
+				sql_query += " ORDER BY ";
+			}
+			if (Integer.parseInt(request.getParameter("order_name")) == 1) {
+				sql_query += "S.name DESC";
+			}
+			else {
+				sql_query += "S.name ASC";
+			}
+		}
+	} catch(NullPointerException e) {}
+	
 	
 	System.out.println(sql_query);
 	
